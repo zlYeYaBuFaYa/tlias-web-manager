@@ -130,7 +130,7 @@ create table tb_student_course(
 insert into tb_student_course(student_id, course_id) values (1,1),(1,2),(1,3),(2,2),(2,3),(3,4);
 
 
--- 案例（员工模块）
+-- 案例（员工模块）P
 -- 涉及到的表：员工表、部门表、员工工作经历表
 # 员工表 : 部门表 = N : 1
 # 员工表 : 员工工作经历表 = 1 : N

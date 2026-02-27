@@ -1,5 +1,6 @@
 package com.itheima.service;
 
+import com.itheima.entity.Emp;
 import com.itheima.entity.EmpQueryParam;
 import com.itheima.entity.PageBean;
 
@@ -11,5 +12,6 @@ public interface EmpService {
      * @return
      */
     PageBean page(EmpQueryParam param);
+    void save(Emp emp);
 
 }

@@ -4,20 +4,27 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itheima.entity.Emp;
+import com.itheima.entity.EmpExpr;
 import com.itheima.entity.EmpQueryParam;
 import com.itheima.entity.PageBean;
+import com.itheima.mapper.EmpExprMapper;
 import com.itheima.mapper.EmpMapper;
 import com.itheima.service.EmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class EmpServiceImpl implements EmpService {
     @Autowired
     private EmpMapper empMapper;
+
+    @Autowired
+    private EmpExprMapper empExprMapper;
 
     /**
      * 分页查询
@@ -82,5 +89,21 @@ public class EmpServiceImpl implements EmpService {
 
         // 3.封装PageBean对象并返回
         return new PageBean(pageInfo.getTotal(), pageInfo.getList());
+    }
+
+    @Override
+    public void save(Emp emp) {
+        //1.补全基础属性
+        emp.setCreateTime(LocalDateTime.now());
+        emp.setUpdateTime(LocalDateTime.now());
+        //2.保存员工基本信息
+        empMapper.insert(emp);
+        //3. 保存员工的工作经历信息 - 批量
+        Integer empId = emp.getId();
+        List<EmpExpr> exprList = emp.getExprList();
+        if(!CollectionUtils.isEmpty(exprList)){
+            exprList.forEach(empExpr -> empExpr.setEmpId(empId));
+            empExprMapper.insertBatch(exprList);
+        }
     }
 }

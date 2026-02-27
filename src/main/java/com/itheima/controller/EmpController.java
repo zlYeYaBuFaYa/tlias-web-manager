@@ -1,5 +1,6 @@
 package com.itheima.controller;
 
+import com.itheima.entity.Emp;
 import com.itheima.entity.EmpQueryParam;
 import com.itheima.entity.PageBean;
 import com.itheima.entity.Result;
@@ -7,6 +8,8 @@ import com.itheima.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -45,5 +48,12 @@ public class EmpController {
         log.info("分页查询：{}, {}, {},{}, {}, {}", param.getName(), param.getGender(), param.getBegin(), param.getEnd(), param.getPage(), param.getPageSize());
         PageBean pageBean = empService.page(param);
         return Result.success(pageBean);
+    }
+
+    @PostMapping
+    public Result save(@RequestBody Emp emp){
+        log.info("请求参数emp: {}", emp);
+        empService.save(emp);
+        return Result.success();
     }
 }
